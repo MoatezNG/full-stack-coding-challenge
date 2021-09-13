@@ -1,6 +1,5 @@
 import { NextPage } from "next";
 import Link from "next/link";
-import { ChangeEvent, useMemo, useState } from "react";
 
 import Layout from "../components/layout";
 import useApiData from "../hooks/use-api-data";
@@ -9,16 +8,14 @@ import Airport from "../types/airport";
 
 const Page: NextPage = () => {
   const airports = useApiData<Airport[]>("/api/airports", []);
-
-  const { paginatedData, handleNextPage, handleSearch, hasNextPage } =
-    usePagination<Airport>(airports, 1, 3);
-
+  const paginatedData = usePagination<Airport>(airports, 2, 3);
+  console.log(paginatedData);
   return (
     <Layout>
       <h1 className="text-2xl font-bold">Code Challenge: Airports</h1>
 
       <h2 className="mt-10 text-xl font-semibold">All Airports</h2>
-      <input placeholder="Search" onChange={handleSearch} />
+
       <div>
         {paginatedData.map((airport) => (
           <Link
@@ -34,7 +31,6 @@ const Page: NextPage = () => {
           </Link>
         ))}
       </div>
-      {hasNextPage && <button onClick={handleNextPage}>Next</button>}
     </Layout>
   );
 };

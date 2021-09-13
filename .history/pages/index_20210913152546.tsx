@@ -9,10 +9,21 @@ import Airport from "../types/airport";
 
 const Page: NextPage = () => {
   const airports = useApiData<Airport[]>("/api/airports", []);
+  const [searchItem, setSearchItem] = useState<string>("");
 
-  const { paginatedData, handleNextPage, handleSearch, hasNextPage } =
-    usePagination<Airport>(airports, 1, 3);
+  const searchedList = useMemo(() => {
+    if (searchItem) return airports.filter((el) => el.country === searchItem);
+    return airports;
+  }, [airports, searchItem]);
 
+  const { paginatedData, handleNextPage } = usePagination<Airport>(
+    searchedList,
+    1,
+    3
+  );
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchItem(e.target.value);
+  };
   return (
     <Layout>
       <h1 className="text-2xl font-bold">Code Challenge: Airports</h1>
@@ -34,7 +45,7 @@ const Page: NextPage = () => {
           </Link>
         ))}
       </div>
-      {hasNextPage && <button onClick={handleNextPage}>Next</button>}
+      <button onClick={handleNextPage}>Next</button>
     </Layout>
   );
 };

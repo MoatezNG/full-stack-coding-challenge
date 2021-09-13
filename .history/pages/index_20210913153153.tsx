@@ -10,7 +10,7 @@ import Airport from "../types/airport";
 const Page: NextPage = () => {
   const airports = useApiData<Airport[]>("/api/airports", []);
 
-  const { paginatedData, handleNextPage, handleSearch, hasNextPage } =
+  const { paginatedData, handleNextPage, handleSearch } =
     usePagination<Airport>(airports, 1, 3);
 
   return (
@@ -34,7 +34,7 @@ const Page: NextPage = () => {
           </Link>
         ))}
       </div>
-      {hasNextPage && <button onClick={handleNextPage}>Next</button>}
+      <button onClick={handleNextPage}>Next</button>
     </Layout>
   );
 };
